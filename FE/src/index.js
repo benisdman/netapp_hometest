@@ -71,10 +71,7 @@ const tree = [];
 const store = createStore(
 	treeReducer,
 	{ tree },
-	compose(
-		applyMiddleware(thunk),
-		window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-	)
+	compose(applyMiddleware(thunk))
 );
 
 ReactDOM.render(
