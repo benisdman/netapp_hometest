@@ -22,9 +22,10 @@ export const NodeTree = ({ tree, onChange }) => {
 		onChange(updatedTree);
 	};
 
-	// if the clocked node is nested in a non-root node,
-	// the handleNodeClicked will pass it this function
-	// via the onChange function and so on untill it gets to a root node
+	// if the clicked node is a non-root node,
+	// the handleNodeClicked will pass it to this function, via the onChange function
+	// this function updates the tree by the parent node,
+	// and pass it over untill it gets to the onChange function on a root node 
 	const handleSubNodesClicked = parentNode => {
 		updatedTree[0] = parentNode;
 		onChange(updatedTree);
