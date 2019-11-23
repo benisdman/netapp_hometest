@@ -2,34 +2,36 @@ import React from "react";
 import { Node } from "./node";
 
 export const NodeTree = ({ tree, onChange }) => {
-	// this 2 methods create updated tree based on the node that was clicked
 	let updatedTree = [];
 
 	// handleNodeClicked handles the click on a specific node,
-	// it updates the updatedTree and pass the updated tree forward to the next parent, calling the onChange function
+	// it updates the updatedTree and pass the updated tree
+	// to the next onChange function
 	const handleNodeClicked = async (node, index) => {
-		console.log("handleNodeClicked", node);
+		// fetching node's children if not already exist
 		if (!node.children || node.children.length === 0) {
 			const children = await fetchNodeChildren(node.id);
 			node.children = children;
 		}
 
+		// toggles the node isOpen
 		node.isOpen = !node.isOpen;
+		// updates the tree
 		updatedTree[index] = node;
-
+		// pass it to next onChange function
 		onChange(updatedTree);
 	};
 
-	// handleSubNodesClicked only handles sub nodes that were clicked,
-	// it adds the parent node to the updated tree and pass the updated tree to the next parent calling the onChange function
+	// if the clocked node is nested in a non-root node,
+	// the handleNodeClicked will pass it this function
+	// via the onChange function and so on untill it gets to a root node
 	const handleSubNodesClicked = parentNode => {
-		console.log("handleSubNodesClicked", parentNode);
 		updatedTree[0] = parentNode;
 		onChange(updatedTree);
 	};
 
+	// used in handleNodeClicked to fetch node's children from API
 	function fetchNodeChildren(nodeId) {
-		console.log("fetchNodeChildren");
 		return fetch(`http://127.0.0.1:5000/${nodeId}/children`).then(res =>
 			res.json()
 		);

@@ -1,10 +1,9 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 import { connect } from "react-redux";
-import { updateTree, setRootNode } from "./actions/tree-actions";
 
+import { updateTree } from "./actions/tree-actions";
 import { fetchRootNode } from "./actions/tree-actions";
 
 import { NodeTree } from "./components/node-tree";
@@ -15,24 +14,19 @@ class App extends React.Component {
 
 		this.onUpdateTree = this.onUpdateTree.bind(this);
 		this.onFetchRootNode = this.onFetchRootNode.bind(this);
-		// this.onFetchNodeChildren = this.onFetchNodeChildren.bind(this);
-		console.log("props", props);
+		// fetching the root node
 		props.onFetchRootNode();
 	}
 
 	// a method for calling the updateTree action
 	onUpdateTree(updatedTree) {
-		console.log("onUpdateTree", updatedTree);
 		this.props.onUpdateTree(updatedTree);
 	}
 
+	// a method for calling the fetchRootNode action
 	onFetchRootNode() {
 		this.props.onFetchRootNode();
 	}
-
-	// onFetchNodeChildren() {
-	// 	this.props.onFetchNodeChildren();
-	// }
 
 	render() {
 		return (
@@ -40,8 +34,9 @@ class App extends React.Component {
 				{/* NodeTree is the recursive component represnting the nodes tree */}
 				<NodeTree
 					tree={this.props.tree}
+					// last onChange function in the recursion 
+					// is calling the onUpdateTree action with the updated tree
 					onChange={updatedTree => this.onUpdateTree(updatedTree)}
-					// onFetchNodeChildren={this.onFetchNodeChildren}
 				></NodeTree>
 			</div>
 		);
@@ -55,7 +50,6 @@ const mapStateToProps = state => {
 const mapActionsToProps = {
 	onUpdateTree: updateTree,
 	onFetchRootNode: fetchRootNode,
-	// onFetchNodeChildren: fetchNodeChildren,
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(App);
